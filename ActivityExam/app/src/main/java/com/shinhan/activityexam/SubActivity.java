@@ -3,12 +3,13 @@ package com.shinhan.activityexam;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class SubActivity extends AppCompatActivity {
-
+    public static final String TAG = "SubActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +21,8 @@ public class SubActivity extends AppCompatActivity {
         Toast.makeText(SubActivity.this, string, Toast.LENGTH_SHORT).show();
         EditText subeditText = (EditText)findViewById(R.id.subedittext);
         //subeditText.setText(string, );
+
+        Log.i(TAG, "String");
         subeditText.setText(string);
     }
 
