@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ff0000"
+    tools:context="com.shinhan.linearlayoutexam.MainActivity"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        android:onClick="onButtonClicked"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/imgk7"
+        android:padding="5dp"
+        android:layout_margin="10dp"
+        android:background="#00ff00"/><!--padding 내부 여백, layout_margin 바깥 여백-->
+    <ImageView
+        android:layout_width="335dp"
+        android:layout_height="200dp"
+        android:background="@drawable/imgaudi"
+        android:layout_weight="0.37" /> <!-- 그림이 꽉 차면 좋겠다...src를 수정해라 -->
+
+</LinearLayout>
