@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,6 +101,19 @@ public class ImageListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image_list);
         Intent intent = getIntent();    // 처음 실행될 때 인텐트 수신
         processIntent(intent);
+        newsItemList.add(new RSSNewsItem("제목1", "https://m.naver.com",
+                "설명", "날짜", "작성자", "카테고리"));
+        newsItemList.add(new RSSNewsItem("제목2", "https://m.naver.com",
+                "설명", "날짜", "작성자", "카테고리"));
+        newsItemList.add(new RSSNewsItem("제목3", "https://m.naver.com",
+                "설명", "날짜", "작성자", "카테고리"));
+        ListView listView = (ListView)findViewById(R.id.listview);      // listView에 나타나는 데이타는 여러개이다.
+        // set or get을 사용하지 않는다.
+        listAdapter = new RSSListAdapter(ImageListActivity.this);
+        listView.setAdapter(listAdapter);
+
+        EditText editText = (EditText)findViewById(R.id.input01);
+        editText.setText(rssUrl);
     }
     @Override
     protected void onNewIntent(Intent intent) {     // 이미 실행중일때 인텐트 수신
@@ -127,7 +141,7 @@ public class ImageListActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {//백그라운드 작업 전에 호출 //그냥 외우기
             super.onPreExecute();
-            dialog.setMessage("뉴스 RSS 요청 중...");
+            dialog.setMessage("작성글 요청하기...");
             dialog.show();//프로그레스 다이얼로그 보여주기
         }
 

@@ -12,9 +12,12 @@ import android.widget.Toast;
 import com.google.android.gms.maps.*;
 
 public class PrivateActivity extends AppCompatActivity {
-
+    private String hwnno;
+    private int cmnty;
+    private int br_grp_g;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private);
         Intent intent = getIntent();    // 처음 실행될 때 인텐트 수신
@@ -28,11 +31,11 @@ public class PrivateActivity extends AppCompatActivity {
     }
     private void processIntent(Intent intent) {
         if (intent != null){
-            String hwnno = intent.getStringExtra("HWNNO");
-            int cmnty = intent.getIntExtra("CMNTY", 0);
-            int br_grp_g =  intent.getIntExtra("BR_GRP_G", 0);
+            hwnno = intent.getStringExtra("HWNNO");
+            cmnty = intent.getIntExtra("CMNTY", 0);
+            br_grp_g =  intent.getIntExtra("BR_GRP_G", 0);
 
-            Toast.makeText(PrivateActivity.this, "hwnno:" + hwnno +", cmnty : " + cmnty + ", br_grp_g : " + br_grp_g,
+            Toast.makeText(PrivateActivity.this, "" + hwnno +"님 환영합니다.",
                     Toast.LENGTH_LONG).show();
         }
         else {
@@ -53,8 +56,8 @@ public class PrivateActivity extends AppCompatActivity {
         // editText의 toString
         // getText는 String으로 변환하여 행원번호를 받아온다.
         //String hwnno = editText1.getText().toString();
-        int cmnty = Integer.parseInt(editText1.getText().toString());
-        int br_grp_g = Integer.parseInt(editText2.getText().toString());
+        cmnty = Integer.parseInt(editText1.getText().toString());
+        br_grp_g = Integer.parseInt(editText2.getText().toString());
 
         //Intent intent = new Intent(MainActivity.this, SubActivity.class);// Main이 Sub를 실행해라.
         // subactivity에 실행시키면서 동시에 자기가 넘겨받은 intent를 subactivity에 전달하고

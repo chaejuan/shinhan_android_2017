@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -33,7 +34,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 
-public class MapView extends AppCompatActivity {
+public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickListener {
     public static final String TAG = "MapView";
     //SupportMapFragment mapFragment;
     private String hwnno;
@@ -75,6 +76,10 @@ public class MapView extends AppCompatActivity {
         setContentView(R.layout.activity_map_view);
         Intent intent = getIntent();    // 처음 실행될 때 인텐트 수신
         processIntent(intent);
+
+
+        // 터치이벤트 설정
+        //map.setOnMapClickListener(this);
 
         if (intent != null){
             hwnno = intent.getStringExtra("HWNNO");
@@ -120,12 +125,17 @@ public class MapView extends AppCompatActivity {
                                 }
                             }
 
+                            /*
+                             * 위성으로 변경하여 당기는 것인데........ !!!
+                             */
+                            /*
                             map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);       // 위성으로 변경 후 당기는 것
-
+                            */
                             //map.animateCamera(  // 위성사진으로 확대
                             //        CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16));
 
                             //map.animateCamera(CameraUpdateFactory.zoomTo(18));
+
                             map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 19));
 
                             ImageView imageView = new ImageView(MapView.this);
@@ -182,10 +192,96 @@ public class MapView extends AppCompatActivity {
                     rectOptions.add(markers[i].latLng);
                 }
                 Polyline polyline = map.addPolyline(rectOptions);
+
+                // 클릭이벤트
+                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+                    public void onMapClick(LatLng point) {
+                        String text = "[단시간 클릭시 이벤트] latitude =" + point.latitude + ", longitude ="
+                                + point.longitude;
+                        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG)
+                                .show();
+                    }
+                });
+                // click text 등록하기
+                map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+
+                    public void onMapLongClick(LatLng point) {
+                        Bundle intent = getIntent().getExtras();
+
+                        String text = "[" + hwnno + "]님 latitude =" + point.latitude + ", longitude ="
+                                + point.longitude + "에 무슨 일이 있었나요?";
+                        //Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG)
+                        //        .show();
+                        AlertDialog.Builder dialog =
+                                new AlertDialog.Builder(MapView.this);
+                        dialog.setMessage(text);
+                        dialog.setPositiveButton("글 작성", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                Toast.makeText(MapView.this, "작성 페이지 이동 중", Toast.LENGTH_SHORT).show();
+                                Bundle intent = getIntent().getExtras();
+                                Intent pintent = new Intent(MapView.this, RecordWrite.class);
+
+                                pintent.putExtra("HWNNO", intent.getString("HWNNO")); // putExtra hwnno를 넣은 값으로 HWNNO를 intent 객체로 전달한다.
+                                pintent.putExtra("CMNTY", cmnty);
+                                pintent.putExtra("BR_GRP_G", br_grp_g);
+
+                                //intent.putExtra("CMNTY", cmnty)
+                                Log.d("TAG", "hwnno : " + intent.getString("HWNNO"));
+                                Log.d("TAG", "cmty : " + cmnty);
+                                Log.d("TAG", "BR_GRP_G" + br_grp_g);
+
+                                //startActivityForResult(intent, 0);     // startActivity
+                                //if (cmnty == 0 || )
+                                startActivity(pintent);
+                            }
+                        });
+                        dialog.setNegativeButton("작성 취소", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(MapView.this, "취소 클릭", Toast.LENGTH_SHORT).show();;
+                            }
+                        });
+                        dialog.show();
+                    }
+                });
             }
         });
 
+
+
     }
+
+    /*
+     * Map 클릭시 터치 이벤트
+     *
+     * @see
+     * com.google.android.gms.maps.GoogleMap.OnMapClickListener#onMapClick(com
+     * .google.android.gms.maps.model.LatLng)
+     */
+    public void onMapClick(LatLng point) {
+
+        // 현재 위도와 경도에서 화면 포인트를 알려준다
+        Point screenPt = map.getProjection().toScreenLocation(point);
+
+        // 현재 화면에 찍힌 포인트로 부터 위도와 경도를 알려준다.
+        LatLng latLng = map.getProjection().fromScreenLocation(screenPt);
+
+        // Log.DEBUG(this, "좌표: 위도(" + point.latitude + "), 경도(" +
+        // point.longitude + ")", Toast.LENGTH_LONG);
+        // Log.DEBUG(this, "화면좌표: X(" + screenPt.x + "), Y(" + screenPt.y + ")",
+        // Toast.LENGTH_LONG);
+
+        Log.d("맵좌표", "좌표: 위도(" + String.valueOf(point.latitude) + "), 경도("
+                + String.valueOf(point.longitude) + ")");
+        Log.d("화면좌표", "화면좌표: X(" + String.valueOf(screenPt.x) + "), Y("
+                + String.valueOf(screenPt.y) + ")");
+    }
+
+
     @Override
     protected void onNewIntent(Intent intent) {     // 이미 실행중일때 인텐트 수신
         //processIntent()
@@ -205,7 +301,6 @@ public class MapView extends AppCompatActivity {
 
         }
     }
-
 
     /*
      * @param requestCode
@@ -259,10 +354,10 @@ public class MapView extends AppCompatActivity {
         public void onProviderDisabled(String provider) {
 
         }
+
     }
 
     public void startLocationService (View view) {
-
         // 위치를 알아보는 방법이 두가지가 있는데, APP을 실행하자마자 좌표를 알 수 있는 방법은 없다.
         // 실내에 있다가 실외로 나가면 좌표를 바로 알 수 없다.
         // 이동하다가 기록된 좌표가 있다면 그 건물을 나왔을 때 입구부터 시작 Location을 얻어온다.

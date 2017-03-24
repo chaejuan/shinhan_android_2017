@@ -47,7 +47,8 @@
         <activity android:name=".MapView" />
         <activity android:name=".FileList" />
         <activity android:name=".Model" />
-        <activity android:name=".ImageListActivity"></activity>
+        <activity android:name=".ImageListActivity" />
+        <activity android:name=".RecordWrite" />
     </application>
 
 </manifest>
