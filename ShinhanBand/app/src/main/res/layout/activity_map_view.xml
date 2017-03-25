@@ -1,22 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.shinhan.shinhanband.MapView">
     <fragment
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="450dp"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/hButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10dp"
+            android:text="headquarters"
+            android:onClick="hButtonClicked"/>
+        <Button
+            android:id="@+id/vButton"
+            android:text="viewpoint"
+            android:textSize="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/hButton"
+            android:onClick="vButtonClicked"/>
+        <Button
+            android:id="@+id/tButton"
+            android:text="tour"
+            android:textSize="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/vButton"
+            android:onClick="tButtonClicked"/>
+        <Button
+            android:id="@+id/pButton"
+            android:layout_width="40dp"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:layout_toRightOf="@id/tButton"
+            android:onClick="pButtonClicked"/>
+        <Button
+            android:id="@+id/mButton"
+            android:text="-"
+            android:textStyle="bold"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/pButton"
+            android:onClick="mButtonClicked"/>/>
+    </RelativeLayout>
     <TextView
         android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text=""
+        android:textStyle="bold"
         android:layout_centerInParent="true"/>
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -88,11 +88,28 @@ public class ImageListActivity extends AppCompatActivity {
     }
 
     public void onButtonClicked(View view) {//로딩창화면보이기
-        EditText editText = (EditText)findViewById(R.id.input01);
-        String urlString=editText.getText().toString();
-        if(urlString.indexOf("http")!=-1) {//http라는 문자열이 포함되어 있는지 확인
-            new LoadXML().execute(urlString); //입력한 url에 접속
-        }
+
+//        EditText editText = (EditText)findViewById(R.id.input01);
+//        String urlString=editText.getText().toString();
+//        if(urlString.indexOf("http")!=-1) {//http라는 문자열이 포함되어 있는지 확인
+//            new LoadXML().execute(urlString); //입력한 url에 접속
+//        }
+// why error...
+        Bundle intent = getIntent().getExtras();
+        Intent pintent = new Intent(ImageListActivity.this, RecordWrite.class);
+
+        pintent.putExtra("HWNNO", intent.getString("HWNNO")); // putExtra hwnno를 넣은 값으로 HWNNO를 intent 객체로 전달한다.
+        pintent.putExtra("CMNTY", cmnty);
+        pintent.putExtra("BR_GRP_G", br_grp_g);
+
+        //intent.putExtra("CMNTY", cmnty)
+        Log.d("TAG", "hwnno : " + intent.getString("HWNNO"));
+        Log.d("TAG", "cmty : " + cmnty);
+        Log.d("TAG", "BR_GRP_G" + br_grp_g);
+
+        //startActivityForResult(intent, 0);     // startActivity
+        //if (cmnty == 0 || )
+        startActivity(pintent);
     }
 
     @Override

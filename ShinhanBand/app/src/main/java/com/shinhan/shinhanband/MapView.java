@@ -17,16 +17,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -36,17 +39,31 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickListener {
     public static final String TAG = "MapView";
+    public static LatLng PERTH;
+    private double pointX, pointY;
+    private LatLng MELBOURNE;           // marker choice
+    private long idx;
     //SupportMapFragment mapFragment;
-    private String hwnno;
-    private int cmnty;
-    private int br_grp_g;
+    private String hwnno;   private int cmnty;  private int br_grp_g;
+    TextView mapText;
+    Button hButton, vButton, tButton, pButton, mButton; /* button */
 
-    SupportMapFragment mapFragment;
-    GoogleMap map;
-    int currentPos;
+    SupportMapFragment mapFragment; GoogleMap map;
+    public int currentPos;
+
+    public void setup() {
+        hButton = (Button)findViewById(R.id.hButton);
+        vButton = (Button)findViewById(R.id.vButton);
+        tButton = (Button)findViewById(R.id.tButton);
+        pButton = (Button)findViewById(R.id.pButton);
+        mButton = (Button)findViewById(R.id.mButton);
+        idx = 19;
+    }
 
     class MyMarker {        // Marker 정보 저장용 클래스
-        String name;    LatLng latLng;
+        String name;
+        LatLng latLng;
+
         MyMarker(String name, LatLng latLng) {
             this.name = name;   this.latLng = latLng;
         }
@@ -65,6 +82,9 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
             new MyMarker("신한은행 오사카", new LatLng(34.676315, 135.499803)),
             new MyMarker("신한은행 뉴옥", new LatLng(40.749467, -73.975967))
     };
+
+    public MarkerOptions marker;
+
     /*
      * @param requestCode
      * @param permissions
@@ -77,7 +97,7 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
         Intent intent = getIntent();    // 처음 실행될 때 인텐트 수신
         processIntent(intent);
 
-
+        setup();
         // 터치이벤트 설정
         //map.setOnMapClickListener(this);
 
@@ -88,7 +108,14 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
 
             Toast.makeText(MapView.this, "hwnno:" + hwnno +", cmnty : " + cmnty + ", br_grp_g : " + br_grp_g,
                     Toast.LENGTH_LONG).show();
+
+            mapText = (TextView)findViewById(R.id.location);
+            String str = hwnno + "님 환영니다.";
+            mapText.setText(str);
         }
+
+
+
 
         mapFragment =
                 (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
@@ -101,7 +128,7 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
                 rectOptions.color(Color.RED);
                 // 마커 춫력
                 for(int i=0; i<markers.length; i++) {
-                    MarkerOptions marker = new MarkerOptions();
+                    marker = new MarkerOptions();
                     marker.position(markers[i].latLng);
                     marker.title(markers[i].name);
 
@@ -124,7 +151,6 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
                                     break;
                                 }
                             }
-
                             /*
                              * 위성으로 변경하여 당기는 것인데........ !!!
                              */
@@ -136,10 +162,10 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
 
                             //map.animateCamera(CameraUpdateFactory.zoomTo(18));
 
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 19));
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), idx));
 
                             ImageView imageView = new ImageView(MapView.this);
-                            imageView.setImageResource(R.mipmap.ic_launcher);
+                            imageView.setImageResource(R.drawable.sunny);
                             // Layer
                             // 팝업 띄우기
                             /*
@@ -152,13 +178,18 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
                             dialog.setMessage(hwnno + "(" + cmnty + "," + br_grp_g + ")"  + "님은" + marker.getTitle()+"을(를) 방문 했습니다.");
                             // 단순한 글은 여기서
                             dialog.setView(imageView);      // xml로 넣을 수도 있다.
+                            /*
+                             *  영국에 있었던 리스트가 나온다.
+                             *  영국의 리스트 사진들이 나오며 해당사진을 클릭하면
+                             *  태그들과 이미지가 출력된다.
+                             */
                             dialog.setPositiveButton("보기", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     Toast.makeText(MapView.this, "보기 클릭", Toast.LENGTH_SHORT).show();
                                     Bundle intent = getIntent().getExtras();
-                                    Intent pintent = new Intent(MapView.this, ImageListActivity.class);
+                                    Intent pintent = new Intent(MapView.this, PrintGridView.class);
 
                                     pintent.putExtra("HWNNO", intent.getString("HWNNO")); // putExtra hwnno를 넣은 값으로 HWNNO를 intent 객체로 전달한다.
                                     pintent.putExtra("CMNTY", cmnty);
@@ -213,13 +244,25 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
                                 + point.longitude + "에 무슨 일이 있었나요?";
                         //Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG)
                         //        .show();
+                        pointX = point.latitude;
+                        pointY = point.longitude;
+
+                        MELBOURNE = new LatLng(pointX, pointY);
+                        Marker melbourne;
+
+                        //Toast.makeText(MapView.this, "취소 클릭", Toast.LENGTH_SHORT).show();
+
+                        melbourne = map.addMarker(new MarkerOptions()
+                                .position(MELBOURNE)
+                                .title("Melbourne")
+                                .snippet("Population: 4,137,400"));
+
                         AlertDialog.Builder dialog =
                                 new AlertDialog.Builder(MapView.this);
                         dialog.setMessage(text);
                         dialog.setPositiveButton("글 작성", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                                 Toast.makeText(MapView.this, "작성 페이지 이동 중", Toast.LENGTH_SHORT).show();
                                 Bundle intent = getIntent().getExtras();
                                 Intent pintent = new Intent(MapView.this, RecordWrite.class);
@@ -227,14 +270,15 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
                                 pintent.putExtra("HWNNO", intent.getString("HWNNO")); // putExtra hwnno를 넣은 값으로 HWNNO를 intent 객체로 전달한다.
                                 pintent.putExtra("CMNTY", cmnty);
                                 pintent.putExtra("BR_GRP_G", br_grp_g);
+                                pintent.putExtra("XPOINT", pointX);
+                                pintent.putExtra("YPOINT", pointY);
 
-                                //intent.putExtra("CMNTY", cmnty)
                                 Log.d("TAG", "hwnno : " + intent.getString("HWNNO"));
                                 Log.d("TAG", "cmty : " + cmnty);
-                                Log.d("TAG", "BR_GRP_G" + br_grp_g);
+                                Log.d("TAG", "BR_GRP_G : " + br_grp_g);
+                                Log.d("TAG", "XPOINT : " + pointX);
+                                Log.d("TAG", "YPOINT : " + pointY);
 
-                                //startActivityForResult(intent, 0);     // startActivity
-                                //if (cmnty == 0 || )
                                 startActivity(pintent);
                             }
                         });
@@ -242,7 +286,7 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(MapView.this, "취소 클릭", Toast.LENGTH_SHORT).show();;
+                                Toast.makeText(MapView.this, "취소 클릭", Toast.LENGTH_SHORT).show();
                             }
                         });
                         dialog.show();
@@ -383,5 +427,56 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
             GPSListener gpsListener = new GPSListener();
             manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, gpsListener);
         }
+    }
+
+    /*
+     * @param view 현재 위치로 가는 이벤트
+     */
+    public void hButtonClicked(View view) {
+        map.moveCamera(CameraUpdateFactory.newLatLng(
+                new LatLng(37.555744, 126.970431)   // 위도, 경도
+        ));
+    }
+
+    /*
+     * @param view 시간을 변경한다. 위성, 거리 등 뷰 변경
+     */
+    public void vButtonClicked(View view) {
+        if (map.getMapType() == GoogleMap.MAP_TYPE_SATELLITE)
+            map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        else if (map.getMapType() == GoogleMap.MAP_TYPE_HYBRID)
+            map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        else if (map.getMapType() == GoogleMap.MAP_TYPE_NORMAL)
+            map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+    }
+
+    /*
+     * @param view 자신이 다녀간 곳들을 이동한다. (x,y)의 사진을 볼 수 있다.
+     */
+    public void tButtonClicked(View view) {
+        if (currentPos >= markers.length) {
+            currentPos = 0;
+        } else {
+            currentPos ++;
+        }
+        if (map != null) {
+            map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(markers[currentPos].latLng, 19));
+        }
+    }
+    /*
+     * @param view zoom
+     */
+    public void pButtonClicked(View view) {
+        //map.animateCamera(CameraUpdateFactory.zoomTo(18));
+        idx ++;
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), idx));
+    }
+    /*
+     * @param view out
+     */
+    public void mButtonClicked(View view) {
+        idx --;
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), idx));
     }
 }

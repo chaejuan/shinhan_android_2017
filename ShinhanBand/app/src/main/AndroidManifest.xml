@@ -4,7 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!-- 인터넷 접근권한 요청 사용자 정의 permission -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- image 처리 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <permission
         android:name="com.shinhan.shinhanband.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
@@ -49,6 +51,7 @@
         <activity android:name=".Model" />
         <activity android:name=".ImageListActivity" />
         <activity android:name=".RecordWrite" />
+        <activity android:name=".PrintGridView"></activity>
     </application>
 
 </manifest>

@@ -40,7 +40,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="VIEW"
+                    android:text="Click"
+                    android:onClick="onButtonClicked"
                     android:layout_below="@+id/dataItem02" />
             </RelativeLayout>
         </LinearLayout>
