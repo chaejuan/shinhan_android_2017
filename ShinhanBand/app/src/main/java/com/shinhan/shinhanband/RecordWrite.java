@@ -7,6 +7,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.Image;
 import android.net.Uri;
@@ -19,10 +20,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.File;
@@ -39,12 +42,17 @@ public class RecordWrite extends AppCompatActivity {
     private String hwnno;   private int cmnty;  private int br_grp_g;
     private double xPoint;  private double yPoint;
 
-    TextView pointText;
+    SimpleDateFormat imgkey;            /* img key */
+
+    TextView pointText;  TextView locationText;
     ImageView iv = null;
     //Bundle intent;
-    Intent pintent;
-    Intent intent;
+    Intent pintent;         Intent intent;
 
+    String[] locationItems = {"영업부", "하노이", "시드니", "폴란드", "미얀마", "충칭분행",
+            "멕시코", "나고야", "고베지점", "캐나다", "우주베키스탄", "달라스", "뉴델리",
+            "홍콩", "맨하탄", "캘리포니아", "동경", "버지니아"};
+    int location;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +71,27 @@ public class RecordWrite extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA}, 1);
             }
         }
+
+
+        locationText = (TextView)findViewById(R.id.locationText);
+
+        Spinner spinner = (Spinner) findViewById(R.id.location_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_dropdown_item, locationItems);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        // 아이템 선택 시 이벤트
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                locationText.setText(locationItems[position]);
+                location = position;
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                locationText.setText("");
+            }
+        });
     }
 
     @Override
@@ -88,10 +117,6 @@ public class RecordWrite extends AppCompatActivity {
 
         intent = getIntent();    // 처음 실행될 때 인텐트 수신
         processIntent(intent);
-
-
-        // 터치이벤트 설정
-        //map.setOnMapClickListener(this);
 
         if (intent != null) {
             pintent = new Intent(RecordWrite.this, RecordWrite.class);
@@ -130,13 +155,30 @@ public class RecordWrite extends AppCompatActivity {
         }
     }
 
+    /*
+     * @param upload
+     */
     public void onUploadButtonClicked(View view) {
         Uri mImageCaptureUri;
 //        String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
 //        mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), url));
 //        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
-
         savePictureFile();
+        imgkey = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");       /* imgkey 채번 */
+        String file_name = imgkey + hwnno + String.format("%04d", cmnty) + ".jpg";
+        String file_path = "/sdcard/Images/" + file_name;
+        File file = new File(file_path);
+        if (file.exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            ImageView imageView = (ImageView) findViewById(R.id.image);
+            imageView.setImageBitmap(bitmap);
+        }
+        /*-------------------------------------------------------------------------------
+         * imgkey, location, latitude, longditude, ctnt, tag_ctnt@
+         * dbio insert
+         *------------------------------------------------------------------------------- */
+        String ctnt = writeText.getText().toString();
+        Log.d("TAG", "" + ctnt);
     }
 
     public void onCameraGalleryButtonClicked(View view) {

@@ -45,8 +45,6 @@ public class PrivateActivity extends AppCompatActivity {
         Spinner spinner = (Spinner) findViewById(R.id.cmnty_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_dropdown_item, cmnyItems);
-
-
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         // 아이템 선택 시 이벤트

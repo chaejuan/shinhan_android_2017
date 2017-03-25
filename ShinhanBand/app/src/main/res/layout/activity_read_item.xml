@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context="com.shinhan.shinhanband.RecordWrite">
+    tools:context="com.shinhan.shinhanband.ReadItem">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,48 +17,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="Write to your memory.."
+            android:text="Read to your memory.."
             android:textSize="15dp"
             android:textStyle="bold"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <RelativeLayout
-            android:layout_width="match_parent"
+        android:layout_gravity="right"
+        android:layout_weight="10">
+        <TextView
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/pointText"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:gravity="center">
-            <TextView
-                android:id="@+id/locationText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="" />
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/locationText"
-                android:id="@+id/location_spinner">
-            </Spinner>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                />
-            <TextView
-                android:id="@+id/pointText"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:gravity="right"/>
-        </RelativeLayout>
+            />
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -88,31 +63,17 @@
             android:id="@+id/linearLayout"
             android:gravity="center">
             <Button
-                android:id="@+id/cameraButton"
-                android:text="camera"
+                android:id="@+id/backButton"
+                android:text="닫기"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="onCameraButtonClicked"/>
-            <Button
-                android:id="@+id/uploadButton"
-                android:text="upload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/cameraButton"
-                android:onClick="onUploadButtonClicked"/>
-            <Button
-                android:id="@+id/galleryButton"
-                android:text="gallery"
-                android:layout_toRightOf="@id/uploadButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onCameraGalleryButtonClicked"/>
+                android:onClick="onButtonClicked"/>
         </LinearLayout>
     </RelativeLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12dp"
-        android:text="If ImageView click then, Start Camera App"
+        android:text="SHINHAN S-BAND"
         android:textStyle="bold"/>
 </LinearLayout>

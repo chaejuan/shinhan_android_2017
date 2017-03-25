@@ -40,11 +40,13 @@ import com.google.android.gms.maps.model.PolylineOptions;
 public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickListener {
     public static final String TAG = "MapView";
     public static LatLng PERTH;
-    private double pointX, pointY;
+
     private LatLng MELBOURNE;           // marker choice
     private long idx;
     //SupportMapFragment mapFragment;
     private String hwnno;   private int cmnty;  private int br_grp_g;
+    private double pointX, pointY;
+
     TextView mapText;
     Button hButton, vButton, tButton, pButton, mButton; /* button */
 
@@ -192,13 +194,14 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
                                     Intent pintent = new Intent(MapView.this, PrintGridView.class);
 
                                     pintent.putExtra("HWNNO", intent.getString("HWNNO")); // putExtra hwnno를 넣은 값으로 HWNNO를 intent 객체로 전달한다.
-                                    pintent.putExtra("CMNTY", cmnty);
-                                    pintent.putExtra("BR_GRP_G", br_grp_g);
+                                    pintent.putExtra("CMNTY", cmnty);   pintent.putExtra("BR_GRP_G", br_grp_g);
+                                    pintent.putExtra("XPOINT", pointX); pintent.putExtra("YPOINT", pointY);
 
-                                    //intent.putExtra("CMNTY", cmnty)
-                                    Log.d("TAG", "hwnno : " + intent.getString("HWNNO"));
-                                    Log.d("TAG", "cmty : " + cmnty);
-                                    Log.d("TAG", "BR_GRP_G" + br_grp_g);
+                                    Log.d("TAG", "map view hwnno : " + intent.getString("HWNNO"));
+                                    Log.d("TAG", "map view cmty : " + cmnty);
+                                    Log.d("TAG", "map view BR_GRP_G : " + br_grp_g);
+                                    Log.d("TAG", "map view xpoint : " + pointX);
+                                    Log.d("TAG", "map view ypoint : " + pointY);
 
                                     //startActivityForResult(intent, 0);     // startActivity
                                     //if (cmnty == 0 || )
@@ -268,10 +271,8 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
                                 Intent pintent = new Intent(MapView.this, RecordWrite.class);
 
                                 pintent.putExtra("HWNNO", intent.getString("HWNNO")); // putExtra hwnno를 넣은 값으로 HWNNO를 intent 객체로 전달한다.
-                                pintent.putExtra("CMNTY", cmnty);
-                                pintent.putExtra("BR_GRP_G", br_grp_g);
-                                pintent.putExtra("XPOINT", pointX);
-                                pintent.putExtra("YPOINT", pointY);
+                                pintent.putExtra("CMNTY", cmnty); pintent.putExtra("BR_GRP_G", br_grp_g);
+                                pintent.putExtra("XPOINT", pointX); pintent.putExtra("YPOINT", pointY);
 
                                 Log.d("TAG", "hwnno : " + intent.getString("HWNNO"));
                                 Log.d("TAG", "cmty : " + cmnty);

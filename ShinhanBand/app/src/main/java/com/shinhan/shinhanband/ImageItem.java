@@ -11,7 +11,23 @@ public class ImageItem {
     String mobile; String date; String location;
     //String hwnno; String name; String mobile; Date date; String ctnt; int cmnty; int br_grp_g; int resId;
 
-      int latitude; int longditude;
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    int latitude; int longditude;
     String ctnt;int cmnty;int br_grp_g;
     ArrayList<String> hashTag = new ArrayList<String>();
     String drdt; String drHwnno;

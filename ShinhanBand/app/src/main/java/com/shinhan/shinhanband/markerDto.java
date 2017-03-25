@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 
 public class markerDto {
-    String grpco_c; String hwnno; String name; String location;
+    String grpco_c; String hwnno; String img_key; String location;
     int mas_s, cmnty, br_grp_g, latitude, longditude;
     String ctnt;
     ArrayList<String> hashTag = new ArrayList<String>();
@@ -16,15 +16,15 @@ public class markerDto {
     String lstdt;
     String lstHwnno;
     int resId;
-
-    public markerDto(String grpco_c, String hwnno, String name, String location,
+    ArrayList<markerDto> items = new ArrayList<markerDto>();
+    public markerDto(String grpco_c, String hwnno, String img_key, String location,
                      int mas_s, int cmnty, int br_grp_g, int latitude, int longditude,
                      String ctnt, ArrayList<String> hashTag, String drdt, String drHwnno,
                      String lstdt, String lstHwnno, int resId)
     {
         this.grpco_c = grpco_c;
         this.hwnno = hwnno;
-        this.name = name;
+        this.img_key = img_key;
         this.location = location;
         this.mas_s = mas_s;
         this.cmnty = cmnty;
@@ -54,14 +54,6 @@ public class markerDto {
 
     public void setHwnno(String hwnno) {
         this.hwnno = hwnno;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getLocation() {
@@ -166,5 +158,9 @@ public class markerDto {
 
     public void setResId(int resId) {
         this.resId = resId;
+    }
+
+    public void addItem(markerDto marker) {
+        items.add(marker);
     }
 }

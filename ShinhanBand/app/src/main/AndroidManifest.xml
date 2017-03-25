@@ -51,7 +51,8 @@
         <activity android:name=".Model" />
         <activity android:name=".ImageListActivity" />
         <activity android:name=".RecordWrite" />
-        <activity android:name=".PrintGridView"></activity>
+        <activity android:name=".PrintGridView" />
+        <activity android:name=".ReadItem"></activity>
     </application>
 
 </manifest>
