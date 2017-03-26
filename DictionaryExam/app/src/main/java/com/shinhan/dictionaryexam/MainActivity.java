@@ -54,16 +54,16 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase database = dictionary.getReadableDatabase();
         Cursor cursor =
                 database.rawQuery("select * from " + Dictionary.TABLE_NAME, null);
-        Log.i("count", cursor.getCount() + ""); // toString
+        Log.i("readdatabase count", cursor.getCount() + ""); // toString
 
-        String[] words = new String[cursor.getCount()];
-        for (int i=0; i < cursor.getCount(); i++) { // DB내용을 문자형배열로 변환
-            cursor.moveToNext();
-            words[i] = cursor.getString(1) + " (" + cursor.getString(2) + ")";  // 2번째 3번째 컬럼을 넣어라
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
-                android.R.layout.simple_list_item_1, words);
-        ListView listview = (ListView)findViewById(R.id.listview);
-        listview.setAdapter(adapter);
+//        String[] words = new String[cursor.getCount()];
+//        for (int i=0; i < cursor.getCount(); i++) { // DB내용을 문자형배열로 변환
+//            cursor.moveToNext();
+//            words[i] = cursor.getString(1) + " (" + cursor.getString(2) + ")";  // 2번째 3번째 컬럼을 넣어라
+//        }
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,
+//                android.R.layout.simple_list_item_1, words);
+//        ListView listview = (ListView)findViewById(R.id.listview);
+//        listview.setAdapter(adapter);
     }
 }

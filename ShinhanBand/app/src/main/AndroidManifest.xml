@@ -7,6 +7,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- image 처리 -->
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera2" />
+
     <permission
         android:name="com.shinhan.shinhanband.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
@@ -47,12 +51,9 @@
         </activity>
         <activity android:name=".PrivateActivity" />
         <activity android:name=".MapView" />
-        <activity android:name=".FileList" />
-        <activity android:name=".Model" />
-        <activity android:name=".ImageListActivity" />
         <activity android:name=".RecordWrite" />
         <activity android:name=".PrintGridView" />
-        <activity android:name=".ReadItem"></activity>
+        <activity android:name=".ReadItem" />
     </application>
 
 </manifest>

@@ -7,9 +7,66 @@ import java.util.ArrayList;
  */
 
 public class ImageItem {
-    String grpco_c; String hwnno; String name;
-    String mobile; String date; String location;
+    String grpco_c; String hwnno; String name; String img_key; int mas_s;
+    String mobile; String date; int location;
+    int latitude; int longditude;
+    String ctnt;int cmnty;int br_grp_g;
+    String hashtags;
+    String drdt; String drHwnno;
+    String lstdt; String lstHwnno;
+    int resId;
     //String hwnno; String name; String mobile; Date date; String ctnt; int cmnty; int br_grp_g; int resId;
+    //     ("15101193", "채주안", "5-8001", "20150213", "#런던지점#신한은행", 7, 0, R.drawable.leondon6));
+
+    public ImageItem(String grpco_c, String hwnno, String img_key, int mas_s, int location, int cmnty, int br_grp_g,
+                     int latitude, int longditude, String ctnt, String hashtags, int resId) {
+        this.grpco_c = grpco_c;
+        this.hwnno = hwnno;
+        this.img_key = img_key;
+        this.mas_s = mas_s;
+        this.location = location;
+        this.cmnty = cmnty;
+        this.br_grp_g = br_grp_g;
+        this.latitude = latitude;
+        this.longditude = longditude;
+        this.hashtags = hashtags;
+        this.resId = resId;
+    }
+
+    public ImageItem(String hwnno, String name, String mobile, String date, int location, int cmnty, int br_grp_g, int resId) {
+        this.hwnno = hwnno;
+        this.name = name;
+        this.mobile = mobile;
+        this.date = date;
+        this.location = location;
+        this.cmnty = cmnty;
+        this.br_grp_g = br_grp_g;
+        this.resId = resId;
+    }
+
+    public String getImg_key() {
+        return img_key;
+    }
+
+    public void setImg_key(String img_key) {
+        this.img_key = img_key;
+    }
+
+    public int getMas_s() {
+        return mas_s;
+    }
+
+    public void setMas_s(int mas_s) {
+        this.mas_s = mas_s;
+    }
+
+    public String getHashtags() {
+        return hashtags;
+    }
+
+    public void setHashtags(String hashtags) {
+        this.hashtags = hashtags;
+    }
 
     public String getMobile() {
         return mobile;
@@ -26,26 +83,6 @@ public class ImageItem {
     public void setDate(String date) {
         this.date = date;
     }
-
-    int latitude; int longditude;
-    String ctnt;int cmnty;int br_grp_g;
-    ArrayList<String> hashTag = new ArrayList<String>();
-    String drdt; String drHwnno;
-    String lstdt; String lstHwnno;
-    int resId;
-    //     ("15101193", "채주안", "5-8001", "20150213", "#런던지점#신한은행", 7, 0, R.drawable.leondon6));
-
-    public ImageItem(String hwnno, String name, String mobile, String date, String location, int cmnty, int br_grp_g, int resId) {
-        this.hwnno = hwnno;
-        this.name = name;
-        this.mobile = mobile;
-        this.date = date;
-        this.location = location;
-        this.cmnty = cmnty;
-        this.br_grp_g = br_grp_g;
-        this.resId = resId;
-    }
-
 
     public String getGrpco_c() {
         return grpco_c;
@@ -71,15 +108,13 @@ public class ImageItem {
         this.name = name;
     }
 
-    public String getLocation() {
+    public int getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(int location) {
         this.location = location;
     }
-
-
 
     public int getCmnty() {
         return cmnty;
@@ -119,14 +154,6 @@ public class ImageItem {
 
     public void setCtnt(String ctnt) {
         this.ctnt = ctnt;
-    }
-
-    public ArrayList<String> getHashTag() {
-        return hashTag;
-    }
-
-    public void setHashTag(ArrayList<String> hashTag) {
-        this.hashTag = hashTag;
     }
 
     public String getDrdt() {

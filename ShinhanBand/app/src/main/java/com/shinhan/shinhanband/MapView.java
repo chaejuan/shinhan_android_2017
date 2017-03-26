@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.location.Location;
@@ -18,6 +20,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +38,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.shinhan.servlet.MarkerDB;
 
 
 public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickListener {
@@ -96,10 +100,12 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_view);
+
         Intent intent = getIntent();    // 처음 실행될 때 인텐트 수신
         processIntent(intent);
 
         setup();
+
         // 터치이벤트 설정
         //map.setOnMapClickListener(this);
 
@@ -108,16 +114,12 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
             cmnty = intent.getIntExtra("CMNTY", 0);
             br_grp_g =  intent.getIntExtra("BR_GRP_G", 0);
 
-            Toast.makeText(MapView.this, "hwnno:" + hwnno +", cmnty : " + cmnty + ", br_grp_g : " + br_grp_g,
-                    Toast.LENGTH_LONG).show();
-
             mapText = (TextView)findViewById(R.id.location);
             String str = hwnno + "님 환영니다.";
             mapText.setText(str);
         }
 
-
-
+        readDatabase();     /* 일어 와서 마커에 저장 한다.. 마커 표시를 이런 식으로 한다. */
 
         mapFragment =
                 (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
@@ -143,6 +145,8 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
                             Toast.makeText(MainActivity.this, marker.getTitle() + "-" + marker.getId() + "-" + marker.getTitle(),
                                     Toast.LENGTH_SHORT).show();
                             */
+
+
                             for(int j = 0 ; j < markers.length; j++) {      // 마커 클릭 시 현재 마커 index 저장
                                 if (markers[j].name.equals(marker.getTitle())) {
                                     Log.d(TAG, "-------------------------------------- index is " + j);
@@ -152,7 +156,12 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
                                         currentPos = 0;
                                     break;
                                 }
+                                marker.getPosition();
                             }
+                            ////////////////////////////////
+
+
+                            ////////////////////////////////
                             /*
                              * 위성으로 변경하여 당기는 것인데........ !!!
                              */
@@ -274,13 +283,13 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
                                 pintent.putExtra("CMNTY", cmnty); pintent.putExtra("BR_GRP_G", br_grp_g);
                                 pintent.putExtra("XPOINT", pointX); pintent.putExtra("YPOINT", pointY);
 
-                                Log.d("TAG", "hwnno : " + intent.getString("HWNNO"));
-                                Log.d("TAG", "cmty : " + cmnty);
-                                Log.d("TAG", "BR_GRP_G : " + br_grp_g);
-                                Log.d("TAG", "XPOINT : " + pointX);
-                                Log.d("TAG", "YPOINT : " + pointY);
+                                Log.d("TAG", "map hwnno : " + intent.getString("HWNNO"));
+                                Log.d("TAG", "map cmty : " + cmnty);
+                                Log.d("TAG", "map br_grp_g : " + br_grp_g);
+                                Log.d("TAG", "map xpoint : " + pointX);
+                                Log.d("TAG", "map ypoint : " + pointY);
 
-                                startActivity(pintent);
+                                startActivityForResult(pintent, 0);
                             }
                         });
                         dialog.setNegativeButton("작성 취소", new DialogInterface.OnClickListener() {
@@ -326,6 +335,25 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
                 + String.valueOf(screenPt.y) + ")");
     }
 
+    // 리스트 데이타 출력하기
+    public void readDatabase () {
+        Log.i("RecordWrite", "readDatabase");
+        MarkerDB markerdb = new MarkerDB (MapView.this);
+        SQLiteDatabase database = markerdb.getReadableDatabase();
+        Cursor cursor =
+                database.rawQuery("select * from " + MarkerDB.TABLE_NAME, null);
+        Log.i("count", cursor.getCount() + ""); // toString
+
+//        String[] words = new String[cursor.getCount()];       //Marker 형식으로 한다.
+//        for (int i=0; i < cursor.getCount(); i++) { // DB내용을 문자형배열로 변환
+//            cursor.moveToNext();
+//            words[i] = cursor.getString(1) + " (" + cursor.getString(2) + ")";  // 2번째 3번째 컬럼을 넣어라
+//        }
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(RecordWrite.this,
+//                android.R.layout.simple_list_item_1, words);
+//        ListView listview = (ListView)findViewById(R.id.listview);
+//        listview.setAdapter(adapter);
+    }
 
     @Override
     protected void onNewIntent(Intent intent) {     // 이미 실행중일때 인텐트 수신
@@ -338,9 +366,6 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
             String hwnno = intent.getStringExtra("HWNNO");
             int cmnty = intent.getIntExtra("CMNTY", 0);
             int br_grp_g =  intent.getIntExtra("BR_GRP_G", 0);
-
-            Toast.makeText(MapView.this, "hwnno:" + hwnno +", cmnty : " + cmnty + ", br_grp_g : " + br_grp_g,
-                    Toast.LENGTH_LONG).show();
         }
         else {
 
@@ -464,6 +489,7 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
             map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(markers[currentPos].latLng, 19));
         }
+
     }
     /*
      * @param view zoom
@@ -479,5 +505,17 @@ public class MapView extends AppCompatActivity implements GoogleMap.OnMapClickLi
     public void mButtonClicked(View view) {
         idx --;
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), idx));
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode == 0) {
+            // finish 또는 back button
+            if(resultCode == RESULT_OK)
+            {
+                String result = data.getStringExtra("Result");
+                readDatabase();
+            }
+        }
     }
 }

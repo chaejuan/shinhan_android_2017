@@ -42,9 +42,9 @@ public class ImageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageItemView view = new ImageItemView(context);
         ImageItem item = items.get(position);
-        view.setName(item.getName());
-        view.setMobile(item.getMobile());
-        view.setDate(item.getDate());
+        view.setHwnno(item.getHwnno());
+        view.setImgkey(item.getImg_key());
+        view.setTag(item.getHashtags());
         view.setImage(item.getResId());
 
         return view;

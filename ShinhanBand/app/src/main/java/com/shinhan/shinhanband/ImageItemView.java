@@ -40,16 +40,16 @@ public class ImageItemView extends LinearLayout {
         imageView = (ImageView)findViewById(R.id.imageView);
     }
 
-    public void setName(String name) {
-        textView.setText(name);
+    public void setHwnno(String hwnno) {
+        textView.setText(hwnno);
     }
 
-    public void setMobile(String mobile) {
-        textView2.setText(mobile);
+    public void setImgkey(String imgkey) {
+        textView2.setText(imgkey);
     }
 
-    public void setDate(String date) {
-        textView3.setText(date);
+    public void setCtnt(String ctnt) {
+        textView3.setText(ctnt);
     }
 
     public void setImage(int resId) {

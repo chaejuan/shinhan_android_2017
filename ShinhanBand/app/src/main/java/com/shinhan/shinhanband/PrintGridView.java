@@ -11,11 +11,14 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class PrintGridView extends AppCompatActivity {
-    EditText editText;
+    EditText editText, hashText;
     Button printButton;
     GridView gridView;
     ImageAdapter adapter;
+    ArrayList<String> hashTags;
     private String hwnno;   private int cmnty;  private int br_grp_g;
     private double pointX, pointY;
     String img_key;
@@ -29,6 +32,7 @@ public class PrintGridView extends AppCompatActivity {
 
         gridView = (GridView) findViewById(R.id.gridView);
         printButton = (Button) findViewById(R.id.listButton);
+        hashText = (EditText) findViewById(R.id.hashText);
 
         intent = getIntent();    // 처음 실행될 때 인텐트 수신
         processIntent(intent);
@@ -55,16 +59,21 @@ public class PrintGridView extends AppCompatActivity {
          */
         //adapter.addItem(new makerDto
         //        ("S001", hwnno, "5-8001", "", 1, cmnty, br_grp_g, R.drawable.leondon1));
+
+        /*this.grpco_c = grpco_c;this.hwnno = hwnno;this.img_key = img_key;this.mas_s = mas_s;this.location = location;
+        this.cmnty = cmnty;this.br_grp_g = br_grp_g;this.latitude = latitude;this.longditude = longditude;
+        this.hashtags = hashtags;this.resId = resId;*/
+        String ctnt = "나는 영국에 왔다.";
         adapter.addItem(new ImageItem
-                ("15101193", "20150513151011930063", "5-8001", "20150213", "#런던지점#신한은행", 7, 0, R.drawable.leondon2));
+                ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#영국#신한은행", R.drawable.leondon1));
         adapter.addItem(new ImageItem
-                ("15101193", "20150513151011930063", "5-8001", "20150213", "#런던지점#신한은행", 7, 0, R.drawable.leondon3));
+                ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#영국#신한은행", R.drawable.leondon2));
         adapter.addItem(new ImageItem
-                ("15101193", "20150513151011930063", "5-8001", "20150213", "#런던지점#신한은행", 7, 0, R.drawable.leondon4));
+                ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#영국#신한은행", R.drawable.leondon3));
         adapter.addItem(new ImageItem
-                ("15101193", "20150513151011930063", "5-8001", "20150213", "#런던지점#신한은행", 7, 0, R.drawable.leondon5));
+                ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#영국#신한은행", R.drawable.leondon4));
         adapter.addItem(new ImageItem
-                ("15101193", "20150513151011930063", "5-8001", "20150213", "#런던지점#신한은행", 7, 0, R.drawable.leondon6));
+                ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#영국#신한은행", R.drawable.leondon5));
 
         gridView.setAdapter(adapter);
 
@@ -79,46 +88,105 @@ public class PrintGridView extends AppCompatActivity {
 
                 img_key = item.getName();
 
-
-                Toast.makeText(PrintGridView.this, "작성 페이지 이동 중", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PrintGridView.this, img_key + " 로 이동 중..", Toast.LENGTH_SHORT).show();
                 Bundle intent = getIntent().getExtras();
                 Intent pintent = new Intent(PrintGridView.this, ReadItem.class);
 
                 pintent.putExtra("HWNNO", intent.getString("HWNNO")); // putExtra hwnno를 넣은 값으로 HWNNO를 intent 객체로 전달한다.
                 pintent.putExtra("CMNTY", cmnty); pintent.putExtra("BR_GRP_G", br_grp_g);
-                //pintent.putExtra("XPOINT", pointX); pintent.putExtra("YPOINT", pointY);
+                pintent.putExtra("XPOINT", pointX); pintent.putExtra("YPOINT", pointY);
                 pintent.putExtra("IMGKEY", img_key);
 
                 Log.d("TAG", "hwnno : " + intent.getString("HWNNO"));
                 Log.d("TAG", "cmty : " + cmnty);
                 Log.d("TAG", "BR_GRP_G : " + br_grp_g);
-                //Log.d("TAG", "XPOINT : " + pointX);
-                //Log.d("TAG", "YPOINT : " + pointY);
+                Log.d("TAG", "XPOINT : " + pointX);
+                Log.d("TAG", "YPOINT : " + pointY);
                 Log.d("TAG", "imgkey : " + img_key);
 
                 startActivity(pintent);
-
             }
         });
 
     }
-    public void onButtonDrClicked(View view) {
 
+    public void onHashButtonClicked(View view) {
+//        Bundle intent = getIntent().getExtras();
+//        Intent pintent = new Intent(PrintGridView.this, HashListView.class);
+//
+//        pintent.putExtra("HWNNO", intent.getString("HWNNO")); // putExtra hwnno를 넣은 값으로 HWNNO를 intent 객체로 전달한다.
+//        pintent.putExtra("CMNTY", cmnty);   pintent.putExtra("BR_GRP_G", br_grp_g);
+//        pintent.putExtra("XPOINT", pointX); pintent.putExtra("YPOINT", pointY);
+//        pintent.putExtra("HASH", hashText.getText().toString());
+
+        Log.d("TAG", "map view hwnno : " + hwnno);
+        Log.d("TAG", "map view cmty : " + cmnty);
+        Log.d("TAG", "map view BR_GRP_G : " + br_grp_g);
+        Log.d("TAG", "map view xpoint : " + pointX);
+        Log.d("TAG", "map view ypoint : " + pointY);
+        Log.d("TAG", "map view hash call search name is " + hashText.getText().toString());
+
+        String searchName = hashText.getText().toString();
+        /**
+         * 여기 수정
+         */
+        adapter = new ImageAdapter(this);
+
+        if (searchName.equals("부행장님")) {
+            adapter.addItem(new ImageItem
+                    ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#신한은행#부행장", R.drawable.itbanker));
+            adapter.addItem(new ImageItem
+                    ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#신한은행#부행장", R.drawable.itbanker2));
+            adapter.addItem(new ImageItem
+                    ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#신한은행#부행장", R.drawable.itbanker3));
+            adapter.addItem(new ImageItem
+                    ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#신한은행#부행장", R.drawable.itbanker4));
+        } else if (searchName.equals("조용병행장님")) {
+            adapter.addItem(new ImageItem
+                    ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#신한은행#행장", R.drawable.jobanker6));
+            adapter.addItem(new ImageItem
+                    ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#신한은행#행장", R.drawable.jobanker5));
+            adapter.addItem(new ImageItem
+                    ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#신한은행#행장", R.drawable.jobanker2));
+            adapter.addItem(new ImageItem
+                    ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#신한은행#행장", R.drawable.jobanker1));
+//            adapter.addItem(new ImageItem
+//                    ("15101193", "20160210151011930063", "5-2001", "20160213", "#은행장#신한은행", 7, 0, R.drawable.jobanker2));
+//            adapter.addItem(new ImageItem
+//                    ("15101193", "20160210151011930063", "5-2001", "20160213", "#은행장#신한은행", 7, 0, R.drawable.jobanker3));
+//            adapter.addItem(new ImageItem
+//                    ("15101193", "20160210151011930063", "5-2001", "20160213", "#은행장#신한은행", 7, 0, R.drawable.jobanker4));
+//            adapter.addItem(new ImageItem
+//                    ("15101193", "20160210151011930063", "5-2001", "20150213", "#은행장#신한은행", 7, 0, R.drawable.jobanker5));
+//            adapter.addItem(new ImageItem
+//                    ("15101193", "20160210151011930063", "5-2001", "20150213", "#은행장#신한은행", 7, 0, R.drawable.jobanker6));
+        } else if (searchName.equals("위성호행장님")) {
+            adapter.addItem(new ImageItem
+                    ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#신한은행#취임", R.drawable.wibanker));
+//            adapter.addItem(new ImageItem
+//                    ("15101193", "20170210151011930063", "5-2100", "20150213", "#부행장#신한은행", 7, 0, R.drawable.wibanker5));
+            adapter.addItem(new ImageItem
+                    ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#신한은행#취임", R.drawable.wibanker2));
+            adapter.addItem(new ImageItem
+                    ("S001", "15101193", "201502131015001510119300", 1, 1, 0, 5, 10, 50, "" ,"#신한은행#취임", R.drawable.wibanker3));
+        }
+        gridView.setAdapter(adapter);
     }
+
 
     public void onListButtonClicked(View view) {
         //Toast.makeText(getApplicationContext(), "선택 : LIST VIEW" + printButton.getText().toString(), Toast.LENGTH_LONG).show();
         if(printButton.getText().toString().equals("LIST VIEW")) {
             //Toast.makeText(getApplicationContext(), "선택 : LIST VIEW" , Toast.LENGTH_LONG).show();
             //adapter = new ImageAdapter(this);
-            gridView.setNumColumns(1);
+            gridView.setNumColumns(2);
             printButton.setText("GRID VIEW");
             //gridView.setAdapter(adapter);
         }
         else if(printButton.getText().toString().equals("GRID VIEW")) {
             //Toast.makeText(getApplicationContext(), "선택 : GRID VIEW" , Toast.LENGTH_LONG).show();
             //adapter = new ImageAdapter(this);
-            gridView.setNumColumns(2);
+            gridView.setNumColumns(1);
             printButton.setText("LIST VIEW");
             //gridView.setAdapter(adapter);
         }

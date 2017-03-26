@@ -12,8 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
+import com.shinhan.servlet.MarkerDB;
 
 public class ReadItem extends AppCompatActivity {
     Intent pintent;
@@ -33,10 +32,13 @@ public class ReadItem extends AppCompatActivity {
         setContentView(R.layout.activity_read_item);
 
         setup();
-        Marker marker = new Marker(ReadItem.this);
-        SQLiteDatabase database = marker.getWritableDatabase();  // 쓰기용 SQLiteDatabase 열기
+        /*
+         * @db markerDB 호출
+         */
+        MarkerDB marker = new MarkerDB(ReadItem.this);
+        //SQLiteDatabase database = marker.getWritableDatabase();  // 쓰기용 SQLiteDatabase 열기
         ContentValues values = new ContentValues(); // content vlues에 담기
-        values.put("img_key", img_key);
+        //values.put("img_key", img_key);
 
         Resources res = getResources();
 

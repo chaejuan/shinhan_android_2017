@@ -1,4 +1,4 @@
-package com.shinhan.shinhanband;
+package com.shinhan.servlet;
 
 import java.util.ArrayList;
 
@@ -7,17 +7,17 @@ import java.util.ArrayList;
  */
 
 public class markerDto {
-    String grpco_c; String hwnno; String img_key; String location;
-    int mas_s, cmnty, br_grp_g, latitude, longditude;
+    String grpco_c; String hwnno; String img_key;;
+    int location, mas_s, cmnty, br_grp_g, latitude, longditude;
     String ctnt;
-    ArrayList<String> hashTag = new ArrayList<String>();
+    ArrayList<String> hashTag;
     String drdt;
     String drHwnno;
     String lstdt;
     String lstHwnno;
     int resId;
     ArrayList<markerDto> items = new ArrayList<markerDto>();
-    public markerDto(String grpco_c, String hwnno, String img_key, String location,
+    public markerDto(String grpco_c, String hwnno, String img_key, int location,
                      int mas_s, int cmnty, int br_grp_g, int latitude, int longditude,
                      String ctnt, ArrayList<String> hashTag, String drdt, String drHwnno,
                      String lstdt, String lstHwnno, int resId)
@@ -40,6 +40,22 @@ public class markerDto {
         this.resId = resId;
     }
 
+    public markerDto(String grpco_c, String hwnno, String img_key, int location,
+                     int mas_s, int cmnty, int br_grp_g, int latitude, int longditude, String ctnt, ArrayList<String> hashTag)
+    {
+        this.grpco_c = grpco_c;
+        this.hwnno = hwnno;
+        this.img_key = img_key;
+        this.location = location;
+        this.mas_s = mas_s;
+        this.cmnty = cmnty;
+        this.br_grp_g = br_grp_g;
+        this.latitude = latitude;
+        this.longditude = longditude;
+        this.ctnt = ctnt;
+        this.hashTag = hashTag;
+    }
+
     public String getGrpco_c() {
         return grpco_c;
     }
@@ -56,11 +72,11 @@ public class markerDto {
         this.hwnno = hwnno;
     }
 
-    public String getLocation() {
+    public int getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(int location) {
         this.location = location;
     }
 

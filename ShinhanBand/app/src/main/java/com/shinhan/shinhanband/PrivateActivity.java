@@ -113,7 +113,7 @@ public class PrivateActivity extends AppCompatActivity {
     public void onButtonDrClicked(View view) {
         Bundle intent = getIntent().getExtras();
 
-        Toast.makeText(PrivateActivity.this, "map view call!",
+        Toast.makeText(PrivateActivity.this, "Google Map 권한 요청중입니다..",
                 Toast.LENGTH_SHORT).show();
         //EditText editText1 = (EditText) findViewById(R.id.editText1);
         //EditText editText2 = (EditText) findViewById(R.id.editText2);
@@ -134,7 +134,7 @@ public class PrivateActivity extends AppCompatActivity {
         //intent.putExtra("CMNTY", cmnty)
         Log.d("TAG", "hwnno : " + intent.getString("HWNNO"));
         Log.d("TAG", "cmty : " + cmnty);
-        Log.d("TAG", "BR_GRP_G" + br_grp_g);
+        Log.d("TAG", "BR_GRP_G : " + br_grp_g);
 
         //startActivityForResult(intent, 0);     // startActivity
         //if (cmnty == 0 || )
