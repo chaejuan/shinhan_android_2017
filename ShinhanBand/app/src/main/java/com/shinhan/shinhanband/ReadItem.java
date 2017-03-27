@@ -17,10 +17,10 @@ import com.shinhan.servlet.MarkerDB;
 public class ReadItem extends AppCompatActivity {
     Intent pintent;
     Intent intent;
-    private String hwnno;   private int cmnty;  private int br_grp_g;
-    private double xPoint;  private double yPoint;
-    private String img_key;
-
+    private String hwnno;   private int cmnty;  private int br_grp_g; private String ctnt;
+    private double pointX, pointY;
+    String img_key; String hashtags;
+    String drawbleImg;
     TextView pointText;
     EditText editText;
     ImageView iv;
@@ -42,10 +42,10 @@ public class ReadItem extends AppCompatActivity {
 
         Resources res = getResources();
 
-        bitmap = (BitmapDrawable) res.getDrawable(R.drawable.leondon1);
+        bitmap = (BitmapDrawable) res.getDrawable(R.drawable.jobanker5);
         int bitmapWidth = bitmap.getIntrinsicWidth(); int bitmapHeight = bitmap.getIntrinsicHeight();
         // 이미지 뷰를 새로운 이미지로 세팅
-        iv.setImageDrawable(bitmap); // 이미지 뷰의 크기를 지정하지 않을 경우 미지가 자동으로 축소됨.
+        iv.setImageDrawable(bitmap); // 이미지 뷰의 크기를 지정하지 않을 경우 이미지가 자동으로 축소됨.
         iv.getLayoutParams().width = bitmapWidth;
         iv.getLayoutParams().height = bitmapHeight;
 
@@ -75,16 +75,20 @@ public class ReadItem extends AppCompatActivity {
     private void processIntent(Intent intent) {
         if (intent != null){
             hwnno = intent.getStringExtra("HWNNO"); cmnty = intent.getIntExtra("CMNTY", 0); br_grp_g =  intent.getIntExtra("BR_GRP_G", 0);
-            //xPoint = intent.getDoubleExtra("XPOINT", 0); yPoint = intent.getDoubleExtra("YPOINT", 0);
-            img_key = intent.getStringExtra("IMGKEY");
-            //long x = (long)xPoint;  long y = (long)yPoint;
+            pointX = intent.getDoubleExtra("XPOINT", 0); pointY = intent.getDoubleExtra("YPOINT", 0);
+            img_key = intent.getStringExtra("IMGKEY"); ctnt = intent.getStringExtra("CTNT");
+            long x = (long)pointX;  long y = (long)pointY;
+            hashtags = intent.getStringExtra("HASHTAGS");
+            drawbleImg = intent.getStringExtra("IMG");
 
             Log.d("TAG", "readitem hwnno : " + hwnno); Log.d("TAG", "readitem cmty : " + cmnty); Log.d("TAG", "readitem br_grp_g : " + br_grp_g);
             //Log.d("TAG", "xPoint : " + xPoint); Log.d("TAG", "yPoint : " + yPoint);
-            Log.d("TAG", "readitem imgkey : " + img_key);
+            Log.d("TAG", "readitem imgkey : " + img_key); Log.d("CTNT", "readitem ctnt : " + ctnt);
+
         }
         else {}
     }
+    /* 닫은 후 되돌아가기 */
     public void onButtonClicked(View view) {
         finish();
     }

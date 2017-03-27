@@ -79,9 +79,12 @@ public class RecordWrite extends AppCompatActivity {
             }
             else
             {
-                ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA}, 1);
+                ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                         android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.CAMERA}, 1);
             }
         }
+
+
 
 
         locationText = (TextView)findViewById(R.id.locationText);
@@ -113,6 +116,18 @@ public class RecordWrite extends AppCompatActivity {
                 Toast.makeText(this, "카메라 권한 승인", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "카메라 권한 거부", Toast.LENGTH_SHORT).show();
+            }
+
+            int permissonCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            if(permissonCheck != PackageManager.PERMISSION_GRANTED) {
+                if(ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_EXTERNAL_STORAGE))
+                {
+                    Toast.makeText(this, "카메라 연동 권한 필요합니다.", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                }
             }
         }
     }
@@ -340,9 +355,11 @@ public class RecordWrite extends AppCompatActivity {
             Log.i("Created dir" + directory, "");
 
             Uri uri = createImageFile();
-            filename = uri + ".jpg";
+            //filename = uri + ".jpg";
 
-            File mypath = new File(directory, "filename");
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            //File mypath = new File(directory, "filename");
+            File mypath = new File(storageDir, filename);
             Log.i("path is" + mypath, "");
 
             FileOutputStream fos = null;
@@ -370,6 +387,7 @@ public class RecordWrite extends AppCompatActivity {
         filename = timeStamp + hwnno + String.format("%02d", br_grp_g) + ".jpg";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         Log.d("TAG", "저장된 파일명 : " + filename);
+        Log.d("TAG", "저장된 파일명 Storage dir : " + storageDir);
         Uri uri = Uri.fromFile(new File(storageDir, filename));
         return uri;
     }
